@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZaaNet - Active Session</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 20px;
+            color: #155724;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background: #28a745;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .main-content {
+            background: white;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .stat-card.warning {
+            border-left-color: #ffc107;
+            background: #fff3cd;
+        }
+        
+        .stat-card.danger {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            line-height: 1;
+        }
+        
+        .stat-unit {
+            font-size: 14px;
+            color: #666;
+            margin-left: 4px;
+        }
+        
+        .stat-subtext {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+        }
+        
+        .timer-display {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .timer-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .timer-value {
+            font-size: 56px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+        
+        .timer-breakdown {
+            margin-top: 15px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .info-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            color: #333;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .actions {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .usage-chart {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .usage-bar {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .usage-bar-fill {
+            height: 100px;
+            background: #667eea;
+            border-radius: 4px 4px 0 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            padding-bottom: 5px;
+        }
+        
+        .usage-bar-label {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .timer-value {
+                font-size: 42px;
+            }
+            
+            .stat-value {
+                font-size: 24px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading State -->
+    <div id="loadingState" class="loading">
+        <div class="loading-spinner"></div>
+        <p>Loading session information...</p>
+    </div>
+
+    <!-- Main Dashboard (Hidden initially) -->
+    <div id="dashboard" class="container" style="display: none;">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌐 ZaaNet Session</h1>
+            <div class="status-badge">
+                <span class="status-indicator"></span>
+                <span>Connected</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Timer Display -->
+            <div class="timer-display">
+                <div class="timer-label">Time Remaining</div>
+                <div class="timer-value" id="timeRemaining">--:--:--</div>
+                <div class="timer-breakdown" id="timeBreakdown"></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="timeProgress"></div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Data Downloaded</div>
+                    <div class="stat-value">
+                        <span id="dataDownloaded">0</span>
+                        <span class="stat-unit">MB</span>
+                    </div>
+                    <div class="stat-subtext">Total received</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Data Uploaded</div>
+                    <div class="stat-value">
+                        <span id="dataUploaded">0</span>
+                        <span class="stat-unit">MB</span>
+                    </div>
+                    <div class="stat-subtext">Total sent</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Total Usage</div>
+                    <div class="stat-value">
+                        <span id="dataTotalUsage">0</span>
+                        <span class="stat-unit">MB</span>
+                    </div>
+                    <div class="stat-subtext">Combined traffic</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Session Duration</div>
+                    <div class="stat-value">
+                        <span id="sessionDuration">0</span>
+                        <span class="stat-unit">min</span>
+                    </div>
+                    <div class="stat-subtext">Time connected</div>
+                </div>
+            </div>
+
+            <!-- Session Information -->
+            <div class="info-section">
+                <h3 style="margin-bottom: 15px; color: #333;">Session Information</h3>
+                
+                <div class="info-row">
+                    <span class="info-label">Plan</span>
+                    <span class="info-value" id="planName">--</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Voucher Code</span>
+                    <span class="info-value" id="voucherCode">--</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Started At</span>
+                    <span class="info-value" id="startTime">--</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Expires At</span>
+                    <span class="info-value" id="expireTime">--</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">MAC Address</span>
+                    <span class="info-value" id="macAddress">--</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">IP Address</span>
+                    <span class="info-value" id="ipAddress">--</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Router ID</span>
+                    <span class="info-value" id="routerId">--</span>
+                </div>
+            </div>
+
+            <!-- Data Usage Chart (Optional) -->
+            <div class="info-section">
+                <h3 style="margin-bottom: 15px; color: #333;">Network Activity</h3>
+                <div class="usage-chart">
+                    <div class="usage-bar">
+                        <div class="usage-bar-fill" id="uploadBar" style="height: 0px;">
+                            <span id="uploadBarText"></span>
+                        </div>
+                        <div class="usage-bar-label">Upload</div>
+                    </div>
+                    <div class="usage-bar">
+                        <div class="usage-bar-fill" id="downloadBar" style="height: 0px; background: #764ba2;">
+                            <span id="downloadBarText"></span>
+                        </div>
+                        <div class="usage-bar-label">Download</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+            <a href="http://www.google.com" class="btn btn-primary">Browse Internet</a>
+            <button class="btn btn-outline" onclick="refreshSession()">Refresh Data</button>
+            <button class="btn btn-danger" onclick="disconnectSession()">Disconnect</button>
+        </div>
+    </div>
+
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    
+    <!-- Session Dashboard Script -->
+    <script src="session.js"></script>
+</body>
+</html>
