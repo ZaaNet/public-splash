@@ -9,7 +9,6 @@
     <meta name="wifi-ssid" content="WIFI_SSID_PLACEHOLDER">
     <title>ZaaNet - WiFi Hotspot</title>
     
-    <!-- External CSS if you prefer, or keep inline -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -30,7 +29,7 @@
                 <span id="hostName" class="host-name">--</span>
             </div>
         </div>
-
+        
         <div class="info-box">
             <p>
                 <strong>Welcome!</strong><br>
@@ -38,12 +37,17 @@
             </p>
         </div>
         
-        <form id="voucherForm" class="voucher-form">
+        <!-- Form with nodogsplash integration -->
+        <form id="voucherForm" class="voucher-form" method="GET" action="$authaction">
+            <!-- Nodogsplash required fields -->
+            <input type="hidden" name="tok" value="$tok" id="ndsToken">
+            <input type="hidden" name="redir" value="$redir" id="ndsRedir">
+            
             <label for="voucherCode">Voucher Code</label>
             <input 
                 type="text" 
                 id="voucherCode" 
-                name="voucherCode"
+                name="voucher"
                 placeholder="ZNET-XXXX-XXXX-XXXX"
                 maxlength="20"
                 autocomplete="off"
@@ -64,16 +68,18 @@
             </a>
         </div>
         
-        <!-- Debug panel (hide in production) -->
-        <div id="debugPanel" class="debug-panel">
+        <!-- Debug panel -->
+        <div id="debugPanel" class="debug-panel" style="display: none;">
             <h3>Debug Info</h3>
             <p>Router ID: <span id="debugRouterID"></span></p>
+            <p>Contract ID: <span id="debugContractID"></span></p>
             <p>Client MAC: <span id="debugMAC"></span></p>
             <p>Client IP: <span id="debugIP"></span></p>
             <p>Environment: <span id="debugEnv"></span></p>
+            <p>NDS Token: <span id="debugToken"></span></p>
         </div>
     </div>
-
+    
     <!-- Load configuration first -->
     <script src="config.js"></script>
     <!-- Then main script -->
