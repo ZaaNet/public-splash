@@ -1,88 +1,91 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="router-id" content="ROUTER_ID_PLACEHOLDER">
-    <meta name="contract-id" content="CONTRACT_ID_PLACEHOLDER">
-    <meta name="main-server" content="MAIN_SERVER_PLACEHOLDER">
-    <meta name="wifi-ssid" content="WIFI_SSID_PLACEHOLDER">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="router-id" content="ROUTER_ID_PLACEHOLDER" />
+    <meta name="contract-id" content="CONTRACT_ID_PLACEHOLDER" />
+    <meta name="main-server" content="MAIN_SERVER_PLACEHOLDER" />
+    <meta name="wifi-ssid" content="WIFI_SSID_PLACEHOLDER" />
     <title>ZaaNet - WiFi Hotspot</title>
-    
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="container">
-        <div class="logo">
-            <h1>🌐 ZaaNet</h1>
-            <p class="subtitle">Decentralized WiFi Sharing</p>
+      <div class="logo">
+        <h1>🌐 ZaaNet</h1>
+        <p class="subtitle">Decentralized WiFi Sharing</p>
+      </div>
+
+      <!-- Network Information (loaded dynamically) -->
+      <div id="networkInfo" class="network-info" style="display: none">
+        <div class="network-header">
+          <h2 id="networkName">Loading network...</h2>
+          <p id="networkLocation" class="network-location">--</p>
         </div>
-        
-        <!-- Network Information (loaded dynamically) -->
-        <div id="networkInfo" class="network-info" style="display: none;">
-            <div class="network-header">
-                <h2 id="networkName">Loading network...</h2>
-                <p id="networkLocation" class="network-location">--</p>
-            </div>
-            <div class="network-details">
-                <span id="networkRating" class="network-rating">--</span>
-                <span id="hostName" class="host-name">--</span>
-            </div>
+        <div class="network-details">
+          <span id="networkRating" class="network-rating">--</span>
+          <span id="hostName" class="host-name">--</span>
         </div>
-        
-        <div class="info-box">
-            <p>
-                <strong>Welcome!</strong><br>
-                Enter your voucher code below to access the internet.
-            </p>
-        </div>
-        
-        <!-- Form with nodogsplash integration -->
-        <form id="voucherForm" class="voucher-form" method="GET" action="$authaction">
-            <!-- Nodogsplash required fields -->
-            <input type="hidden" name="tok" value="$tok" id="ndsToken">
-            <input type="hidden" name="redir" value="$redir" id="ndsRedir">
-            
-            <label for="voucherCode">Voucher Code</label>
-            <input 
-                type="text" 
-                id="voucherCode" 
-                name="voucher"
-                placeholder="ZNET-XXXX-XXXX-XXXX"
-                maxlength="20"
-                autocomplete="off"
-                required
-            />
-            
-            <button type="submit" id="submitBtn">
-                Connect to Internet
-            </button>
-        </form>
-        
-        <div id="message" class="message"></div>
-        
-        <div class="buy-link">
-            <p>Don't have a voucher?</p>
-            <a href="https://zaanet.xyz/evouchers" target="_blank">
-                Buy Voucher Here →
-            </a>
-        </div>
-        
-        <!-- Debug panel -->
-        <div id="debugPanel" class="debug-panel" style="display: none;">
-            <h3>Debug Info</h3>
-            <p>Router ID: <span id="debugRouterID"></span></p>
-            <p>Contract ID: <span id="debugContractID"></span></p>
-            <p>Client MAC: <span id="debugMAC"></span></p>
-            <p>Client IP: <span id="debugIP"></span></p>
-            <p>Environment: <span id="debugEnv"></span></p>
-            <p>NDS Token: <span id="debugToken"></span></p>
-        </div>
+      </div>
+
+      <div class="info-box">
+        <p>
+          <strong>Welcome!</strong><br />
+          Enter your voucher code below to access the internet.
+        </p>
+      </div>
+
+      <!-- Form with nodogsplash integration -->
+      <form
+        id="voucherForm"
+        class="voucher-form"
+        method="GET"
+        action="$authaction"
+      >
+        <!-- Nodogsplash required fields -->
+        <input type="hidden" name="tok" value="$tok" id="ndsToken" />
+        <input type="hidden" name="redir" value="$redir" id="ndsRedir" />
+
+        <label for="voucherCode">Voucher Code</label>
+        <input
+          type="text"
+          id="voucherCode"
+          name="voucher"
+          placeholder="ZNET-XXXX-XXXX-XXXX"
+          maxlength="20"
+          autocomplete="off"
+          required
+        />
+
+        <button type="submit" id="submitBtn">Connect to Internet</button>
+      </form>
+
+      <div id="message" class="message"></div>
+
+      <div class="buy-link">
+        <p>Don't have a voucher?</p>
+        <a href="https://zaanet.xyz/evouchers" target="_blank" rel="noopener noreferrer">
+          Buy Voucher Here →
+        </a>
+      </div>
+
+      <!-- Debug panel -->
+      <div id="debugPanel" class="debug-panel" style="display: none">
+        <h3>Debug Info</h3>
+        <p>Router ID: <span id="debugRouterID"></span></p>
+        <p>Contract ID: <span id="debugContractID"></span></p>
+        <p>Client MAC: <span id="debugMAC"></span></p>
+        <p>Client IP: <span id="debugIP"></span></p>
+        <p>Environment: <span id="debugEnv"></span></p>
+        <p>NDS Token: <span id="debugToken"></span></p>
+      </div>
     </div>
-    
+
     <!-- Load configuration first -->
     <script src="config.js"></script>
     <!-- Then main script -->
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
