@@ -36,23 +36,15 @@
           Enter your voucher code below to access the internet.
         </p>
       </div>
-
-      <!-- Form with nodogsplash integration -->
-      <form
-        id="voucherForm"
-        class="voucher-form"
-        method="GET"
-        action="$authaction"
-      >
-        <!-- Nodogsplash required fields -->
-        <input type="hidden" name="tok" value="$tok" id="ndsToken" />
-        <input type="hidden" name="redir" value="$redir" id="ndsRedir" />
+      <form id="voucherForm" class="voucher-form">
+        <!-- Client info injected by Nodogsplash -->
+        <input type="hidden" id="clientMAC" value="$clientmac" />
+        <input type="hidden" id="clientIP" value="$clientip" />
 
         <label for="voucherCode">Voucher Code</label>
         <input
           type="text"
           id="voucherCode"
-          name="voucher"
           placeholder="ZNET-XXXX-XXXX-XXXX"
           maxlength="20"
           autocomplete="off"
@@ -66,7 +58,11 @@
 
       <div class="buy-link">
         <p>Don't have a voucher?</p>
-        <a href="https://zaanet.xyz/evouchers" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://zaanet.xyz/evouchers"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Buy Voucher Here →
         </a>
       </div>
@@ -74,18 +70,21 @@
       <!-- Debug panel -->
       <div id="debugPanel" class="debug-panel" style="display: none">
         <h3>Debug Info</h3>
-        <p>Router ID: <span id="debugRouterID"></span></p>
-        <p>Contract ID: <span id="debugContractID"></span></p>
-        <p>Client MAC: <span id="debugMAC"></span></p>
-        <p>Client IP: <span id="debugIP"></span></p>
-        <p>Environment: <span id="debugEnv"></span></p>
-        <p>NDS Token: <span id="debugToken"></span></p>
+        <p>Router ID: <span id="debugRouterID">ROUTER_ID_PLACEHOLDER</span></p>
+        <p>
+          Contract ID: <span id="debugContractID">CONTRACT_ID_PLACEHOLDER</span>
+        </p>
+        <p>Client MAC: <span id="debugMAC">$clientmac</span></p>
+        <p>Client IP: <span id="debugIP">$clientip</span></p>
+        <p>NDS Token: <span id="debugToken">$tok</span></p>
+        <p>Auth Action: <span id="debugAuthAction">$authaction</span></p>
+        <p>Redirect: <span id="debugRedir">$redir</span></p>
       </div>
     </div>
 
     <!-- Load configuration first -->
     <script src="config.js"></script>
-    <!-- Then main script -->
+    <!-- Then main script (simplified for FAS mode) -->
     <script src="script.js"></script>
   </body>
 </html>
